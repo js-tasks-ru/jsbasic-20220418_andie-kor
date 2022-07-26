@@ -11,13 +11,13 @@ export default class ProductCard {
           <span class="card__price">€${product.price.toFixed(2)}</span>
         </div>
         <div class="card__body">
-          <div class="card__title">Laab kai chicken salad</div>
+          <div class="card__title">${product.name}</div>
           <button type="button" class="card__button">
             <img src="/assets/images/icons/plus-icon.svg" alt="icon">
           </button>
         </div>
       </div>
-    /div>
+    </div>
     `);
 
     this.card = card;

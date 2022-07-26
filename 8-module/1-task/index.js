@@ -39,6 +39,28 @@ export default class CartIcon {
   }
 
   updatePosition() {
-    // ваш код ...
+    const cartElement = document.querySelector('.cart-icon');
+    
+    if (!cartElement.offsetHeight) return;
+    
+    if (document.documentElement.clientWidth <= 767) resetStyles();  
+    else if (window.pageYOffset > 50) {
+      const containerRight =  document.querySelector('.container').getBoundingClientRect().right + 20;
+      const sideRight = document.documentElement.clientWidth - cartElement.getBoundingClientRect().width - 10;
+      const minRight = Math.round(Math.min(containerRight, sideRight));
+
+      cartElement.style.position = 'fixed';
+      cartElement.style.top = 50 + 'px';
+      cartElement.style.left = minRight + 'px';
+      cartElement.style.zIndex = 100;
+    } 
+    else resetStyles();  
+
+    function resetStyles() {
+      cartElement.style.position = '';
+      cartElement.style.top = '';
+      cartElement.style.left ='';
+      cartElement.style.zIndex = '';
+    }
   }
 }
