@@ -5,7 +5,7 @@ export default class StepSlider {
 
     this.steps = steps;
     this.value = value;
-    this.percentPosition = 0;
+    this.percentPosition = this.value / (this.steps - 1) * 100;
 
     this.render(); 
   }
