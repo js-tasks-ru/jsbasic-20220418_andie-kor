@@ -35,8 +35,10 @@ export default class ProductCard {
       bubbles: true,
     });
 
-    this.card.dispatchEvent(productEvent);
-    this.card.addEventListener('product-add', {});
+    this.elem.dispatchEvent(productEvent);
+    // this.card.addEventListener('product-add', () => {
+    //   console.log('event: ', event.target);
+    // });
   }
 
   get elem() {

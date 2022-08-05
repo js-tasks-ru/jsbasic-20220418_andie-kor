@@ -10,8 +10,6 @@ import ProductsGrid from '../../8-module/2-task/index.js';
 import CartIcon from '../../8-module/1-task/index.js';
 import Cart from '../../8-module/4-task/index.js';
 
-//import pr from '../../8-module/2-task/products.js';
-
 export default class Main {
 
   constructor() {
@@ -45,8 +43,6 @@ export default class Main {
           category: this.ribbonMenu.value
         });
 
-        console.log(this.ribbonMenu.value);
-
         document.body.addEventListener('product-add', (event) => {
           const targetProduct = this.products.find(prod => prod.id === event.detail);
           this.cart.addProduct(targetProduct);
@@ -65,7 +61,6 @@ export default class Main {
         })
 
         document.body.addEventListener('change', (event) => {        
-          console.log(event.target);  
           if (event.target.closest('#nuts-checkbox')) {
             this.productsGrid.updateFilter({
               noNuts: event.target.checked

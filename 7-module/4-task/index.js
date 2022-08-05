@@ -30,10 +30,10 @@ export default class StepSlider {
     this.slider = slider;    
 
     this.stepsRender();
-    this.setNewSlideValue();
+    this.setNewSliderValue();
 
     this.slider.addEventListener('click', (event) => {
-      this.clickListener(event);
+      this.clickListener(event); 
     })
 
     this.slider.querySelector('.slider__thumb').addEventListener('pointerdown', () => {
@@ -55,7 +55,7 @@ export default class StepSlider {
   }
 
   clickListener(event) {
-    if (event.target.tagName === 'SPAN') {
+    if (event.target.closest('.slider__steps') && event.target.tagName === 'SPAN') {
       this.value = event.target.dataset.id;
     }
     else {
@@ -66,49 +66,50 @@ export default class StepSlider {
 
     this.percentPosition = this.value / (this.steps - 1) * 100;
 
-    this.setNewSlideValue();
-
+    this.setNewSliderValue();
     this.createCustomEvent();
-
   }
 
   cursorListener() {
 
-    this.slider.querySelector('.slider__thumb').ondragstart = () => false;
+    document.querySelector('.slider__thumb').ondragstart = () => false;
 
     function pointerMove(event) {
-
       document.querySelector('.slider').classList.add('slider_dragging');   
 
       let currnetPosition = event.clientX - this.slider.getBoundingClientRect().left;
-      let cursorPosition = currnetPosition / (this.slider.offsetWidth/100);
-
-      if (cursorPosition < 0) cursorPosition = 0;
-      if (cursorPosition > 100) cursorPosition = 100; 
-
-      this.value = Math.round((cursorPosition / 100) * (this.steps-1));
-      this.position = (this.value / (this.steps - 1)) * 100;
-
-      document.querySelector('.slider__thumb').style.left = cursorPosition + '%';
-      document.querySelector('.slider__progress').style.width = cursorPosition + '%';
-      document.querySelector('.slider__value').innerHTML = this.value;
+      this.percentPosition = currnetPosition / (this.slider.offsetWidth/100);
       
+      if (this.percentPosition < 0) this.percentPosition = 0;
+      if (this.percentPosition > 100) this.percentPosition = 100; 
+
+      this.value = Math.round((this.percentPosition / 100) * (this.steps-1));
+      
+      this.setNewSliderValue();
     }
 
     this.onMoveListener = pointerMove.bind(this);
       
     document.addEventListener('pointermove', this.onMoveListener);
     
-    document.addEventListener('pointerup', () => {
+    document.addEventListener('pointerup', (event) => {
       document.removeEventListener('pointermove', this.onMoveListener);
       
       if (document.querySelector('.slider').classList.contains('slider_dragging')){
         document.querySelector('.slider').classList.remove('slider_dragging');
       }
-
+      
+      let left = event.clientX - this.slider.getBoundingClientRect().left;
+      let pos = (left / this.slider.offsetWidth) * (this.steps -1) ;
+      this.value = Math.round(pos); 
+      if (this.value > this.steps - 1) this.value = this.steps - 1;
+      if (this.value < 0) this.value = 0;
+      this.percentPosition = this.value / (this.steps - 1) * 100;
+      
+      this.setNewSliderValue();
       this.createCustomEvent();
-    })
-    
+
+    }, {once: true})
   }
 
   createCustomEvent() {
@@ -119,13 +120,12 @@ export default class StepSlider {
     this.slider.dispatchEvent(sliderChangeEvent);
   }
 
-  setNewSlideValue() {
+  setNewSliderValue() {
 
     if (!document.querySelector('.slider__value')) { // first render
       this.slider.querySelector('.slider__value').innerHTML = this.value;
       this.slider.querySelector(`.slider__steps [data-id~= "${this.value}"]`).classList.add('slider__step-active');
     }
-
     else {
       document.querySelector('.slider__value').innerHTML = this.value;
       document.querySelector('.slider__thumb').style.left = this.percentPosition + '%';
