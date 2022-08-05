@@ -39,7 +39,7 @@ export default class CartIcon {
   }
 
   updatePosition() {
-    const cartElement = document.querySelector('.cart-icon');
+    let cartElement = document.querySelector('.cart-icon');
     
     if (!cartElement.offsetHeight) return;
     

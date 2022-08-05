@@ -15,21 +15,14 @@ export default class ProductGrid {
       <div class="products-grid">
         <div class="products-grid__inner"></div>
       </div>`
-  )
+    );
 
     this.productsCardsRender();
   }
 
   productsCardsRender() {
 
-    let targetElement;
-    if (document.querySelector('.products-grid__inner')) {
-      targetElement = document.querySelector('.products-grid__inner');
-    } 
-    else {
-      targetElement = this.productGrid.querySelector('.products-grid__inner');
-    }
-
+    let targetElement = this.productGrid.querySelector('.products-grid__inner');
     targetElement.innerHTML = '';
 
     for (let item of this.products) {
@@ -56,7 +49,7 @@ export default class ProductGrid {
     if(filters.hasOwnProperty('maxSpiciness')) {
       this.filters.maxSpiciness = filters.maxSpiciness;
     }
-    if(filters.hasOwnProperty('category')) {
+    if(filters.hasOwnProperty('category') && filters.category != undefined) {
       this.filters.category = filters.category;
     }
 
